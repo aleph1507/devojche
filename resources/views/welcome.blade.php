@@ -8,15 +8,32 @@
         <div class="row cat-row">
 
                 <p class="lead title"><b>Jewel пазар</b></p>
+                <div class="div_kategorii" id="div_kategorii">
+                    <br>
+                    <button class="btn btn-default btn-inverted-default hidden-md hidden-lg btn-kategorii" id="btn_kategorii">Види Категории</button>
+                    <ul class="nav nav-pills nav-justified kategorii" id="pil_kategorii">
+                        <li class="cat-pill {{ isset($id) ? '' : 'active'}}"><a href="/">Сите</a></li>
+                        {{-- @foreach($categories as $cat) --}}
+                        <?php $k = 0; ?>
+                        @for($i=0;$i<count($categories);$i++)
+                            @if($i % 4 == 0)
+                                <div class="row"></div>
+                            @endif
+                            <?php $k++; ?>    
+                            <li class="cat-pill {{isset($id) && $categories[$i]->id == $id ? 'active' : ''}}"><a href="{{route('welcome.category', $categories[$i]->id)}}">{{$categories[$i]->ime}}</a></li>
+                        @endfor
+                        {{-- @endforeach --}}
+                    </ul>
+                </div>
 
-                <div class="categories hidden-xs col-md-12 col-lg-12">
+                {{-- <div class="categories hidden-xs col-md-12 col-lg-12">
                     @foreach($categories as $cat)
                         <a href="#" class="btn btn-default col-xs-12 col-sm-6 col-md-4 col-lg-2">
                             {{$cat->ime}}
                         </a>
                     @endforeach
                     
-                </div>
+                </div> --}}
             <!-- </div> -->
 
         </div>
@@ -25,6 +42,10 @@
             <section class="products">
                 @include('partials._products')
             </section>
+        @else
+            <div class="nop">
+                <h2 class="nop">Моментално нема продукти во оваа категорија.</h2>
+            </div>
         @endif
 
 

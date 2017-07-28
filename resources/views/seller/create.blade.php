@@ -3,7 +3,7 @@
 @section('content')
 
 	<div class="container">
-		<h2 class="pull-left">Стани продавач</h2><br>
+		<h2 class="pull-left">Информации за продавачот</h2><br>
 		<hr class="form-title-hr">
 		<br>
 		{!! Form::open(['route' => 'seller.store', 'files' => true]) !!}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\ProductsController;
 use App\Seller;
 use App\Product;
 use App\User;
@@ -22,12 +23,13 @@ class SellerController extends Controller
 
     public function __construct(){
         $this->middleware('auth');
+        // $this->middleware('checkactivated')->only('create','store','update','destroy');
     }
 
     public function index()
     {
         $seller = Auth::user()->seller;
-        $products = $seller->products()->orderBy('updated_at', 'desc')->paginate(10);
+        $products = $seller->products()->where('deleted', 0)->orderBy('updated_at', 'desc')->paginate(7);
         $cat = Category::all();
         return view('seller.profile')->withSeller($seller)->withProducts($products)->withCat($cat);
     }
@@ -48,6 +50,29 @@ class SellerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function smeni_activated($id){
+        $seller = Seller::find($id);
+        $smena = '';
+        $tab = 'seller';
+        if($seller->aktiviran){
+            $smena = 'деактивиран.';
+            $seller->aktiviran = false;
+        }
+        else {
+            $smena = 'активиран.';
+            $seller->aktiviran = true;
+        }
+        $seller->save();
+        Session::flash('success', 'Продавачот е ' . $smena);
+        return redirect('/admin')->with('tab', $tab);
+    }
+
+    // public function nov_seller($uid, $ime, $adresa, $telefon = null, $slika){
+    //     $seller = new Seller();
+
+    // }
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -56,6 +81,7 @@ class SellerController extends Controller
                 'telefon' => 'sometimes|string',
                 'slika' => 'required|image'
             ]);
+
 
         $uid = Auth::user()->id;
         $seller = new Seller();
@@ -108,6 +134,8 @@ class SellerController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        // dd('seller.update');
         $this->validate($request, [
                 'ime' => 'required|regex:/^[\pL\s\-]+$/u',
                 'adresa' => 'required|string',
@@ -143,12 +171,22 @@ class SellerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function destroy($id)
     {
-        $seller = Auth::user()->seller;
+        // dd('seller.destroy');
+        $seller = Seller::find($id);
+        $user = $seller->user();
+        $products = Product::where('seller_id', $id);
+        $PC = new ProductsController;
+        foreach($products as $p)
+            $PC->destroy($p->id);
         File::delete(public_path('/images/sellers/' . $seller->slika));
         $seller->delete();
-        Session::flash('success', 'Избришани сте како продавач.');
+        $user->delete();
+        Session::flash('success', 'Продавачот е избришан.');
         return redirect('/');
 
     }

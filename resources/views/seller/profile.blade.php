@@ -9,13 +9,19 @@
 			</div>
 		</div>
 
+		@if(!$seller->aktiviran)
+			<div class="row alert alert-warning">	
+				<p>Вашиот продавачки статус треба да биде потврден од администратор.</p>
+			</div>
+		@endif
+
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 modal-div">
-				<a class="open-modal btn btn-default modal-btn" href="#edit">Лични податоци</a>
+				<a class="open-modal btn btn-default modal-btn" href="#edit-{{$seller->id}}">Лични податоци</a>
 			</div>
 			{{-- <div class="col-md-6 col-lg-6"></div> --}}
 			<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 pull-right modal-div">
-				<a class="open-modal btn btn-default modal-btn" href="#add">Додади продукт</a>
+				<a class="open-modal btn btn-default modal-btn" {{$seller->aktiviran ? '' : 'disabled'}} href="#add">Додади продукт</a>
 			</div>
 		</div>
 
@@ -46,12 +52,16 @@
 		{{$products->links()}}
 	</div>
 
-	<div id="edit" class="modal-dialog">
+	@include('partials._edit-seller')
+
+	{{-- <div id="edit" class="modal-dialog">
 		<div class="modal-content">
 			<span class="close-modal">&times;</span>
 			{!! Form::model($seller, ['route' => ['seller.update', $seller->id], 'method' => 'PATCH', 'files' => true]) !!}
 
 				<div class="container">
+
+					@include('partials._edit-seller')
 					<div class="row">
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 							<img src="{{asset('images/sellers/' . $seller->slika)}}" class="img-responsive" alt="Вашата слика">
@@ -81,12 +91,12 @@
 
 			{!! Form::close() !!}
 		</div>
-	</div>
+	</div> --}}
 
 	<div id="add" class="modal-dialog">
 		<div class="modal-content">
 			<span class="close-modal">&times;</span>
-				{{ Form::open(['route' => 'products.store', 'method' => 'POST', 'files' => true]) }}
+				{!! Form::open(['route' => 'products.store', 'method' => 'POST', 'files' => true]) !!}
 
 					{{ Form::label('ime', 'Име на продуктот: ', ['class' => 'control-label form-group']) }}
 					{{ Form::text('ime', '', ['class' => 'form-control', 'required' => '']) }}
@@ -107,8 +117,8 @@
 					{{ Form::file('prva_slika', ['class' => 'form-control', 'accept' => 'image/*', 'required' => '']) }}
 
 					{{ Form::label('description', 'Опис: ', ['class' => 'control-label form-group mod-lg-form-group'])}}
-					{{ Form::textarea('description', '', ['class' => 'form-control'])}}
-
+					{!! Form::textarea('description', '', ['class' => 'tinymcetextarea form-control'])!!}
+		
 					{{ Form::label('slika1', 'Додатнa сликa 1:', ['class' => 'form-control form-group mod-lg-form-group']) }}
 					<input type="file" name="slika1" accept="image/*">
 
@@ -120,7 +130,7 @@
 
 					{{ Form::submit('Постави продукт', ['class' => 'btn btn-default btn-inverted-default btn-lg mod-lg-form-group']) }}
 
-				{{ Form::close() }}
+				{!! Form::close() !!}
 		</div>
 	</div>
 	<script>

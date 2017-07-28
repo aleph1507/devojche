@@ -1,5 +1,5 @@
 <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom:1%;" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="bsnav" style="margin-bottom:1%;" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header" style="padding-bottom: 1%;">
@@ -15,7 +15,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     
-                    <li class="dropdown">
+                    {{-- <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Категорија
                     <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -23,7 +23,7 @@
                         <li><a href="#">Cat 2</a></li>
                         <li><a href="#">Cat 3</a></li>
                     </ul>
-                    </li>
+                    </li> --}}
 
                     @if(Auth::check())
                         <li>

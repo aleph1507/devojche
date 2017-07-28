@@ -24,6 +24,16 @@
 
     <script src="https://use.fontawesome.com/687fb7c147.js"></script>
 
+    <script src='https://cloud.tinymce.com/stable/tinymce.min.js?apikey=rmeqg09h72k0vfyvhf5eaj2vpb09pi092f2uwmlij0iz791u'></script>
+
+    <script>
+    tinymce.init({
+        selector: '.tinymcetextarea',
+        menubar: false,
+        branding: false
+    });
+    </script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

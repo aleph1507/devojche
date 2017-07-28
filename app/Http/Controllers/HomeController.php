@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 // use Input;
 use App\Product;
 use App\Category;
+use App\Seller;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -18,7 +20,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'index']);
+        // $this->middleware('auth', ['except' => ['index', 'get_category']]);
     }
 
     /**
@@ -28,6 +30,12 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        if(Auth::check()){
+            if(Auth::user()->seller == null)
+                return view('seller.create');
+        }
+
+
         $categories = Category::all();
         // $first = true;
         // $skip = 3;
@@ -44,9 +52,21 @@ class HomeController extends Controller
         //     return view('partials._products', ['products' => $products])->render();
         // }
 
-        
-        $products = Product::where('deleted', 0)->orderBy('updated_at', 'desc')->paginate(6);
+        if($request->sid){
+            $seller = Seller::find($request->sid);
+            $products = Product::where('seller_id', $seller->id)->where('deleted', 0)->orderBy('updated_at', 'desc')->paginate(6);
+        }
+        else
+            $products = Product::where('deleted', 0)->orderBy('updated_at', 'desc')->paginate(6);
 
         return view('welcome')->withCategories($categories)->withProducts($products);
+    }
+
+    public function get_category($id){
+        // $cat = Category::find($id);
+        $categories = Category::all();
+        $products = Product::where('category_id', $id)->where('deleted', 0)->orderBy('updated_at', 'desc')->paginate(6);
+
+        return view('welcome', compact('categories', 'products', 'id'));
     }
 }

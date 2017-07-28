@@ -7,6 +7,7 @@ use Image;
 use Session;
 use File;
 use Auth;
+use App\User;
 use App\Product;
 use App\Seller;
 use App\Category;
@@ -18,6 +19,11 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(){
+        $this->middleware('auth')->except('show');
+    }
+
     public function index()
     {
         //
@@ -59,6 +65,11 @@ class ProductsController extends Controller
         $p = new Product();
         $p->ime = $request->ime;
         $seller = Auth::user()->seller;
+
+        if(!$seller->aktiviran){
+            Session::flash('warning','Треба да бидете потврден продавач за да можете да додавате продукти.');
+            return redirect('/seller');
+        }
         // print_r($seller);
         // exit;
         $category = Category::find($request->category);
@@ -121,7 +132,12 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+        $seller = Seller::find($product->seller_id);
+        $user = User::find($seller->user_id);
+        // $sid = $seller->id;
+        $products_from_seller = Product::where('seller_id', $seller->id);
+        return view('products.show')->withProduct($product)->withSeller($seller)->withPfs($products_from_seller)->withUser($user);
     }
 
     /**
@@ -170,6 +186,9 @@ class ProductsController extends Controller
         // exit;
         $category = Category::find($request->category);
         //$p->seller_id = $seller->id;
+
+        if($request->description)
+            $p->description = $request->description;
 
         if(($request->slika1)||($request->slika2)||($request->slika3)){
             // print_r($request->sliki);
@@ -243,6 +262,11 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $p = Products::find($id);
+        File::deleteDirectory(asset('images/products/') . $p->id);
+        File::delete(asset('images/products/') . $p->prva_slika);
+        $p->delete();
+        Session::flash('success', 'Продуктот е успешно избришан.');
+        return back();
     }
 }

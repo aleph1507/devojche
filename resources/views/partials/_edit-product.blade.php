@@ -41,20 +41,46 @@
 					</div>
 				</div>
 				<div class="row thumb-row">
+					<div class="row productdesc">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							{{ Form::label('description', 'Опис: ', ['class' => 'control-label form-group mod-lg-form-group'])}}
+							{!! Form::textarea('description', $p->description, ['class' => 'tinymcetextarea form-control'])!!}
+						</div>
+					</div>
 					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 						@if(isset($p->slika1))
 							<img class="editthumb" src="{{asset('/images/products/' . '/' . $p->id . '/' . $p->slika1)}}" alt="">
-							{{Form::label('slika1', 'Промени ја првата слика:', ['class' => 'control-label form-group'])}}
+							{{Form::label('slika1', 'Промени ја сликата:', ['class' => 'control-label form-group'])}}
 							{{Form::file('slika1')}}
 						@else
 							{{ Form::label('slika1', 'Додади слика:', ['class' => 'control-label form-group']) }}
 							{{Form::file('slika1', ['class' => 'form-control'])}}
 						@endif
 					</div>
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+						@if(isset($p->slika2))
+							<img class="editthumb" src="{{asset('/images/products/' . '/' . $p->id . '/' . $p->slika2)}}" alt="">
+							{{Form::label('slika2', 'Промени ја сликата:', ['class' => 'control-label form-group'])}}
+							{{Form::file('slika2')}}
+						@else
+							{{ Form::label('slika2', 'Додади слика:', ['class' => 'control-label form-group']) }}
+							{{Form::file('slika2', ['class' => 'form-control'])}}
+						@endif
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+						@if(isset($p->slika3))
+							<img class="editthumb" src="{{asset('/images/products/' . '/' . $p->id . '/' . $p->slika3)}}" alt="">
+							{{Form::label('slika3', 'Промени ја сликата:', ['class' => 'control-label form-group'])}}
+							{{Form::file('slika3')}}
+						@else
+							{{ Form::label('slika3', 'Додади слика:', ['class' => 'control-label form-group']) }}
+							{{Form::file('slika3', ['class' => 'form-control'])}}
+						@endif
+					</div>
 				</div>
 
 					{{ Form::submit('Запиши промени', ['class' => 'btn btn-default btn-inverted-default btn-lg btn-form']) }}	
-					<button  class="btn btn-default pull-right btn-lg btn-form close-modal-btn" style="margin-right:5%;">Затвори</button>
+					<button class="btn btn-default btn-lg btn-form close-modal-btn" style="margin-right:5%;margin-left:10%;">Затвори</button>
 			</div>
 		{!! Form::close() !!}
 	</div>

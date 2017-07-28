@@ -22,8 +22,8 @@ class AdminController extends Controller
 
     public function index(){
     	$products = Product::where('deleted', 0)->orderBy('updated_at', 'desc')->paginate(5);
-        $dp = Product::where('deleted', 1)->orderBy('updated_at', 'desc')->paginate(5);
-    	$sellers = Seller::orderBy('updated_at', 'desc')->paginate(5);
+        $dp = Product::where('deleted', 1)->orderBy('updated_at', 'desc')->get();
+    	$sellers = Seller::orderBy('updated_at', 'desc')->get();
     	$categories = Category::all();
     	return view('admin.index', compact(['products', 'dp', 'sellers', 'categories']));
     }
@@ -31,11 +31,14 @@ class AdminController extends Controller
     public function delete_product(Request $request, $pid){
         // dd($request);
         $product = Product::find($pid);
+        $tab = $product->deleted ? 'dp' : 'p';
         File::deleteDirectory(public_path() . '/images/products/' . $product->ime);
         // dd(public_path() . '/images/products/' . $product->prva_slika);
         File::delete(public_path() . '/images/products/' . $product->prva_slika);
+        // dd($tab);
         $product->delete();
         Session::flash('success', 'Продуктот е избришан.');
-        return back();
+        return redirect()->route('admin.index')->with('tab', $tab);
+        // return back();
     }
 }

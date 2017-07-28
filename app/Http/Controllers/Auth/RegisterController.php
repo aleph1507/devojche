@@ -60,6 +60,28 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
+
+    // store_seller(){
+    //     $uid = Auth::user()->id;
+    //     $seller = new Seller();
+    //     $seller->user_id = $uid;
+    //     $seller->ime = $request->ime;
+    //     $seller->adresa = $request->adresa;
+    //     if($request->telefon)
+    //         $seller->telefon = $request->telefon;
+    //     $image = $request->file('slika');
+    //     $filename = time() . '.' . $image->getClientOriginalExtension();
+    //     $location = public_path('/images/sellers/' . $filename);
+    //     Image::make($image)->fit(450,500)->save($location);
+    //     $seller->slika = $filename;
+
+    //     $user = Auth::user();
+    //     $seller->save();
+    //     $seller->user()->associate($user);
+    //     Session::flash('success', 'Регистрирани како продавач.');
+    //     return redirect('/');
+    // }
+
     protected function create(array $data)
     {
         return User::create([
@@ -67,5 +89,6 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
     }
 }

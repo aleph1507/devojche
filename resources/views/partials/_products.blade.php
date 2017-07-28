@@ -27,26 +27,40 @@
 	<div class="load row">
 		@foreach($products as $p)
 		@if($p->deleted == 0)
-			<?php 
-				if(isset($p->sliki))
-					$sliki = explode(";", $p->sliki);
-				else
-					$sliki = null;
-			?>
 			<div class="lazy-container col-sm-12 col-lg-4 col-md-4">
 				<div class="thumbnail">
 					<div id="carousel-{{$p->id}}" class="carousel slide" data-interval="false" data-ride="carousel">
 						<ol class="carousel-indicators">
-							@for($i=0; $i<count($sliki); $i++)
-								<li data-target="#carousel-{{$p->id}}" data-slide-to="{{$i}}" {{$i==0 ? "active" : ""}}></li>
-							@endfor
+							<li data-target="#carousel-{{$p->id}}" data-slide-to="0" active></li>
+							@if(isset($p->slika1))
+								<li data-target="#carousel-{{$p->id}}" data-slide-to="1"></li>
+							@endif
+							@if(isset($p->slika2))
+								<li data-target="#carousel-{{$p->id}}" data-slide-to="2"></li>
+							@endif
+							@if(isset($p->slika3))
+								<li data-target="#carousel-{{$p->id}}" data-slide-to="3"></li>
+							@endif
 						</ol>
 						<div class="carousel-inner">
-							@for($i=0; $i<count($sliki); $i++)
-								<div class="item {{$i == 0 ? "active" : ""}}">
-									<img src="{{asset('images/products/' . $p->ime . '/' . $sliki[$i])}}" alt="" class="slide-img">
+							<div class="item active">
+								<img src="{{asset('images/products/' . $p->prva_slika)}}" alt="">
+							</div>
+							@if(isset($p->slika1))
+								<div class="item">
+									<img src="{{asset('images/products/' . $p->id . '/' . $p->slika1)}}" alt="">
 								</div>
-							@endfor
+							@endif
+							@if(isset($p->slika2))
+								<div class="item">
+									<img src="{{asset('images/products/' . $p->id . '/' . $p->slika2)}}" alt="">
+								</div>
+							@endif
+							@if(isset($p->slika3))
+								<div class="item">
+									<img src="{{asset('images/products/' . $p->id . '/' . $p->slika3)}}" alt="">
+								</div>
+							@endif
 						</div>
 						<a href="#carousel-{{$p->id}}" class="left carousel-control" data-slide="prev">
 							<span class="glyphicon glyphicon-chevron-left"></span>
@@ -56,8 +70,9 @@
                         </a>
 					</div>
 					<div class="caption">
-                        <h4 class="pull-right">{{$p->cena}}</h4>
-                        <h4><a href="#">{{$p->ime}}</a></h4>
+                        <h4 class="pull-right">{{$p->cena}} ден.</h4>
+                        <h4><a href="{{route('products.show', $p->id)}}">{{$p->ime}}</a></h4>
+                        <p>{!!substr(strip_tags($p->description), 0, 80)!!}{!!isset($p->description) ? '...' : '<br>'!!} <a href="{{route('products.show', $p->id)}}">Види повеќе</a></p>
                     </div>
 				</div>
 			</div>
