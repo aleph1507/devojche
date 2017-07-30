@@ -41,6 +41,7 @@ $(document).ready(function(){
 				$("#btn_kategorii").removeClass('btn-inverted-default');
 			if(!$("#btn_kategorii").hasClass('attached_btn_kategorii'))
 				$("#btn_kategorii").addClass('attached_btn_kategorii');
+			
 
 			bsnav.append($("#div_kategorii"));
 			in_nav = 1;

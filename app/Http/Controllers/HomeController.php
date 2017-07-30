@@ -10,6 +10,9 @@ use App\Product;
 use App\Category;
 use App\Seller;
 use Auth;
+use Mail;
+use Recaptcha;
+use Session;
 
 class HomeController extends Controller
 {
@@ -68,5 +71,38 @@ class HomeController extends Controller
         $products = Product::where('category_id', $id)->where('deleted', 0)->orderBy('updated_at', 'desc')->paginate(6);
 
         return view('welcome', compact('categories', 'products', 'id'));
+    }
+
+    public function get_contact(){
+        return view('contact');
+    }
+
+    public function post_contact(Request $request){
+        $this->validate($request, [
+                'ime' => 'required|regex:/^[\pL\s\-]+$/u',
+                'email' => 'required|email',
+                'msg' => 'required|min:5',
+                'g-recaptcha-response' => 'required|recaptcha'
+            ]);
+
+        // dd($request);
+        $title = "Контакт форма порака од $request->ime";
+        $sender = $request->email;
+        $ime = $request->ime;
+        $content = $request->msg;
+
+        // dd("title: " . $title . " sender: $sender" . " ime: $ime " . " content: $content ");
+
+        Mail::send('email.contactmail', ['title' => $title, 'sender' => $sender, 'content' => $content], function ($message) use ($request)
+        {
+
+            $message->from($request->email, $request->ime);
+
+            $message->to('xrristo@gmail.com');
+
+        });
+    
+        Session::flash('success', 'Пораката е пратена.');
+        return redirect('/');
     }
 }

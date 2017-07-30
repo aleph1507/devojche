@@ -50,7 +50,7 @@
                         </li>
                     @endif
                     <li>
-                        <a href="#">Контакт</a>
+                        <a href="/contact">Контакт</a>
                     </li>
                 </ul>
             </div>

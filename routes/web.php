@@ -22,6 +22,10 @@ use App\Product;
 
 Route::get('/', 'HomeController@index');
 
+Route::get('/contact', 'HomeController@get_contact')->name('contact.get');
+
+Route::post('/contact', 'HomeController@post_contact')->name('contact.post');
+
 Route::post('/soldby', 'HomeController@index');
 
 Route::get('/cat/{category}', 'HomeController@get_category')->name('welcome.category');

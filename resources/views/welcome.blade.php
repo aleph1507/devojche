@@ -16,7 +16,7 @@
                         {{-- @foreach($categories as $cat) --}}
                         <?php $k = 0; ?>
                         @for($i=0;$i<count($categories);$i++)
-                            @if($i % 4 == 0)
+                            @if($i % 5 == 0)
                                 <div class="row"></div>
                             @endif
                             <?php $k++; ?>    
