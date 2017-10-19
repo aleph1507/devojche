@@ -42,6 +42,8 @@ class ProductsController extends Controller
     public function save_slika($slika, $k, $p_directory){
         $fn = time() . "$k." . $slika->getClientOriginalExtension();
         $location = $p_directory . '/' . $fn;
+        $o_location = $p_directory . '/o_' . $fn;
+        Image::make($slika)->save($o_location);
         Image::make($slika)->fit(600,600)->save($location);
         return $fn;
         // $k++;
@@ -82,6 +84,8 @@ class ProductsController extends Controller
         $slika = $request->file('prva_slika');
         $filename = time() . '.' . $slika->getClientOriginalExtension();
         $location = public_path('/images/products/' . $filename);
+        $o_location = public_path('/images/products/o_' . $filename);
+        Image::make($slika)->save($o_location);
         Image::make($slika)->fit(600,600)->save($location);
         // dd($seller);
         $p->prva_slika = $filename;
@@ -239,10 +243,13 @@ class ProductsController extends Controller
         $p->cena = $request->cena;
         if($request->prva_slika){
             File::delete(public_path('images/products/' . $p->prva_slika));
+            File::delete(public_path('images/products/o_' . $p->prva_slika));
             //dd(public_path('images/products/' . $p->prva_slika));
             $slika = $request->file('prva_slika');
             $filename = time() . '.' . $slika->getClientOriginalExtension();
             $location = public_path('/images/products/' . $filename);
+            $o_location = public_path('/images/products/o_' . $filename);
+            Image::make($slika)->fit(600,600)->save($o_location);
             Image::make($slika)->fit(600,600)->save($location);
             // dd($seller);
             $p->prva_slika = $filename;
@@ -263,8 +270,13 @@ class ProductsController extends Controller
     public function destroy($id)
     {
         $p = Products::find($id);
+        $t = '<br>Directory: ' . asset('images/products/') . $p->id .
+            '<br>prva_slika: ' . asset('images/products/') . $p->prva_slika . 
+            '<br>o_prva_slika: ' . asset('images/products/o_') . $p->prva_slika;
+        dd($t);
         File::deleteDirectory(asset('images/products/') . $p->id);
         File::delete(asset('images/products/') . $p->prva_slika);
+        File::delete(asset('images/products/o_') . $p->prva_slika);
         $p->delete();
         Session::flash('success', 'Продуктот е успешно избришан.');
         return back();

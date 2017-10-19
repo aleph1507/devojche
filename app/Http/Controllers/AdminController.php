@@ -32,9 +32,10 @@ class AdminController extends Controller
         // dd($request);
         $product = Product::find($pid);
         $tab = $product->deleted ? 'dp' : 'p';
-        File::deleteDirectory(public_path() . '/images/products/' . $product->ime);
+        File::deleteDirectory(public_path() . '/images/products/' . $product->id);
         // dd(public_path() . '/images/products/' . $product->prva_slika);
         File::delete(public_path() . '/images/products/' . $product->prva_slika);
+        File::delete(public_path() . '/images/products/o_' . $product->prva_slika);
         // dd($tab);
         $product->delete();
         Session::flash('success', 'Продуктот е избришан.');

@@ -1,4 +1,5 @@
 <!-- Navigation -->
+    {{-- <script src="{{asset('js/')}}"></script> --}}
     <nav class="navbar navbar-inverse navbar-fixed-top" id="bsnav" style="margin-bottom:1%;" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -26,9 +27,11 @@
                     </li> --}}
 
                     @if(Auth::check())
+                        @if(!Auth::user()->isadmin != 1)
                         <li>
                             <a href="{{route('admin.index')}}">Администраторски Панел</a>
                         </li>
+                        @endif
                         @if(Auth::user()->seller == NULL)
                             <li>
                                 <a href="{{ route('seller.create') }}">Продавај преку нас</a>

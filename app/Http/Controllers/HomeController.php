@@ -68,7 +68,9 @@ class HomeController extends Controller
     public function get_category($id){
         // $cat = Category::find($id);
         $categories = Category::all();
-        $products = Product::where('category_id', $id)->where('deleted', 0)->orderBy('updated_at', 'desc')->paginate(6);
+        $products = Product::where('category_id', $id)->
+                where('deleted', 0)->orderBy('updated_at', 'desc')->
+                paginate(6);
 
         return view('welcome', compact('categories', 'products', 'id'));
     }

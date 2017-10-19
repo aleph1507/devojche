@@ -357,3 +357,8 @@ span.produkt {
      border-bottom:1px solid #444; 
      cursor: pointer;
 }
+
+#otvorena_slika {
+	max-width: 600px;
+	max-height: 600px;
+}

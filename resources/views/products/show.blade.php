@@ -2,17 +2,18 @@
 
 @section('content')
 
+	
 	<div class="container contents-margin">
 		<div class="row">
 			<div class="hidden-xs hidden-sm col-md-6 col-lg-6">
-				<div class="row" style="margin:0;">
-					<img src="{{asset('images/products/' . $product->prva_slika)}}" id="otvorena_slika" alt="" class="golema_slika">
+				<div class="row z" style="margin:0;">
+					<img src="{{asset('images/products/o_' . $product->prva_slika)}}" id="otvorena_slika" alt="" onhover="zoom_otvorena_slika()" class="golema_slika">
 				</div>
 				<div class="row thumb-row">
 					@if($product->slika1)
 						{{-- <div class="start-margin"></div> --}}
 						{{-- <div class="thumb-produkt-div"> --}}
-							<img src="{{asset('images/products/' . $product->id . '/' . $product->slika1)}}" alt="" id="thumbnail-slika1" class="thumb_slika">
+							<img src="{{asset('images/products/' . $product->id . '/o_' . $product->slika1)}}" alt="" id="thumbnail-slika1" class="thumb_slika">
 						{{-- </div> --}}
 					@endif
 					@if($product->slika2)
@@ -20,14 +21,14 @@
 						<div class="hidden-xs hidden-sm col-md-2 col-lg-2"> --}}
 						{{-- @if(!$product->slika1) div.start-margin --}}
 						{{-- <div class="thumb-produkt-div"> --}}
-							<img src="{{asset('images/products/' . $product->id . '/' . $product->slika2)}}" alt="" id="thumbnail-slika2" class="thumb_slika">
+							<img src="{{asset('images/products/' . $product->id . '/o_' . $product->slika2)}}" alt="" id="thumbnail-slika2" class="thumb_slika">
 						{{-- </div> --}}
 						{{-- </div> --}}
 					@endif
 					@if($product->slika3)
 						{{-- <div class="hidden-xs hidden-sm col-md-1 col-lg-1"></div>
 						<div class="hidden-xs hidden-sm col-md-2 col-lg-2"> --}}
-							<img src="{{asset('images/products/' . $product->id . '/' . $product->slika3)}}" alt="" id="thumbnail-slika3" class="thumb_slika">
+							<img src="{{asset('images/products/' . $product->id . '/o_' . $product->slika3)}}" alt="" id="thumbnail-slika3" class="thumb_slika">
 						{{-- </div> --}}
 						{{-- <div class="hidden-xs hidden-sm col-md-1 col-lg-1"></div> --}}
 					@endif
@@ -98,16 +99,46 @@
 			</div>
 		</div>
 		<div class="back-btn-div">
-			<a href="/" style="margin:auto;" class="btn btn-default btn-inverted-default btn-lg">Назад на почетна</a>
+			<a href="{{ URL::previous() }}" style="margin:auto;" class="btn btn-default btn-inverted-default btn-lg">Назад на почетна</a>
 		</div>
 	</div>
+	<script src="{{asset('js/jquery.zoom.min.js')}}"></script>
+{{-- 	<script>
+		$(document).ready(function(){
+  		$('#otvorena_slika')
+   		 .wrap('<span style="display:inline-block"></span>')
+   		 .css('display', 'block')
+    	 .parent()
+    	 .zoom({ maginfy:10, });
+		});
+	</script> --}}
 
 	<script type="text/javascript">
+		
+		$(document).ready(function(){
+  		$('#otvorena_slika')
+   		 	.wrap('<span style="display:inline-block"></span>')
+   		 	.css('display', 'block')
+    	 	.parent()
+    	 	.zoom({ maginfy:10, });
+		});
+
 		$(".thumb_slika").click(function(){
 			var tmp = "";
 			tmp = $("#otvorena_slika").attr("src");
+			//$(".zoomImg").removeClass("zoomImg");
 			$("#otvorena_slika").attr("src", $(this).attr("src"));
 			$(this).attr("src", tmp);
+
+			$(".zoomImg").attr("src", $("#otvorena_slika").attr("src"));
+			// alert($(".zoomImg").attr("src"));
+
+			// $('#otvorena_slika')
+			// .addClass("zoomImg")
+   // 		 	.wrap('<span style="display:inline-block"></span>')
+   // 		 	.css('display', 'block')
+   //  	 	.parent()
+   //  	 	.zoom({ maginfy:10, });
 		});
 
 		$(".thumb_slika").hover(function(){
